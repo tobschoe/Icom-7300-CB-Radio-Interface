@@ -1,0 +1,230 @@
+html {
+    background-color: rgb(41, 41, 41);
+}
+
+textarea {
+    width: 100px;
+    height: 80px;
+}
+
+.mainwindow {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+    width: 585px;
+    height: 325px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(0, 0, 0);
+}
+
+.btn-row {
+    position: absolute;
+    top: 85%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+}
+
+.btn {
+    display: inline-block;
+    margin: auto;
+    width: 70px;
+    height: 70px;
+
+}
+
+.btn-row-button {
+    width: 100%;
+    height: 100%;
+    font-size: 25px;
+    border: 3px solid rgb(44, 40, 40);
+    border-radius: 100%;
+}
+
+button:hover {
+    background-color: rgb(255, 255, 255);
+    color: rgb(99, 87, 87);
+}
+
+.frq {
+    position:absolute;
+    width: 300px;
+    height: 60px;
+    top: 25%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+}
+
+#frq {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    overflow: hidden;
+    font-size: 50px;
+}
+
+.noise {
+    position:absolute;
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    left: 7%;
+    transform: translate(-50%, -50%);
+}
+
+#noise {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    overflow: hidden;
+    font-size: 10px;
+}
+
+#noiserange {
+    width: 300px;
+    height: 50px;
+    font-size: 20px;
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    background-image: url(smeter.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    outline: none; /* Remove outline */
+}
+
+input[id=noiserange]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 7px;
+    background: #00f114;
+    cursor: pointer;
+    margin-top: 4px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  }
+
+.chn {
+    position:absolute;
+    width: 60px;
+    height: 60px;
+    top: 25%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+}
+
+#chn {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    font-size: 40px;
+}
+
+.switchCh {
+    position:absolute;
+    top: 60%;
+    left: 80%;
+    height: 60px;
+    width: 190px;
+    transform: translate(-50%, -50%);
+}
+
+.switch-btn {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    font-size: 30px;
+    border: 1px solid black;
+}
+
+.btnsw {
+    display: inline-block;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+}
+
+#warning {
+    height: 150px;
+    position:absolute;
+    top: 25%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+.overlayWindow {
+    position:absolute;
+    top: 50%;
+    left: 77%;
+    width: 200px;
+    height: 310px;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    border: 1px solid rgba(53, 49, 49, 0.979);
+    border-radius: 15px;
+    text-align: center;
+    background-color: black;
+    padding: 1%;
+}
+#chnOTextarea {
+    border-radius: 10px;
+    height: 70px;
+    width: 180px;
+    resize: none;
+    font-size: 50px;
+    text-align: center;
+}
+
+.oRow {
+    margin: 1px;
+}
+
+.oBtn3 {
+    width: 30%;
+    height: 45px;
+    font-size: 20px;
+}
+
+.oBtn2 {
+    width: 40%;
+    height: 30px;
+}
+
+.oBtn1 {
+    margin-top: 2px;
+    width: 94%;
+    height: 40px;
+    font-size: 20px;
+}
+
+/*
+        <div id="overlayWindow" class="overlayWindow">
+            <div class="oRow1">
+                <textarea id="chnOTextarea" readonly></textarea>
+            </div>
+            <div class="oRow2">
+                <button class="oBtn3" id="b7">7</button>
+                <button class="oBtn3" id="b8">8</button>
+                <button class="oBtn3" id="b9">9</button>
+            </div>
+            <div class="oRow3">
+                <button class="oBtn3" id="b4">4</button>
+                <button class="oBtn3" id="b5">5</button>
+                <button class="oBtn3" id="b6">6</button>
+            </div>
+            <div class="oRow4">
+                <button class="oBtn3" id="b1">1</button>
+                <button class="oBtn3" id="b2">2</button>
+                <button class="oBtn3" id="b3">3</button>
+            </div>
+            <div class="oRow5">
+                <button class="oBtn2" id="oDelete"></button>
+                <button class="oBtn2"id="oEnter"></button>
+            </div>
+        </div>
+
+*/

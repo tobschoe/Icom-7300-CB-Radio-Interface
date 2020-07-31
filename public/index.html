@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM/FM</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <div id="mainwindow" class="mainwindow">
+        <div class="frq">
+            <textarea id="frq" readonly ></textarea>
+        </div>
+        <div class="noise">
+            <input id="noiserange" type="range" value="0" min="0" max="241">
+            <!--<textarea id="noise" readonly ></textarea>-->
+        </div>
+        <div class="chn">
+            <textarea id="chn" readonly >9</textarea>
+        </div>
+        <div class="btn-row">
+            <div class="btn">
+                <button class="btn-row-button" id="FM">FM</button>
+            </div>
+            <div class="btn">
+                <button class="btn-row-button" id="AM">AM</button>
+            </div>
+            <div class="btn">
+                <button class="btn-row-button" id="USB">USB</button>
+            </div>
+            <div class="btn">
+                <button class="btn-row-button" id="LSB">LSB</button>
+            </div>
+        </div>
+        <div class="switchCh">
+            <div class="btnsw">
+                <button class ="switch-btn" id="minus">-</button>
+            </div>
+            <div class="btnsw">
+                <button class ="switch-btn" id="plus">+</button>
+            </div>
+            <div class="btnsw">
+                <button class ="switch-btn" id="chnOverlayBtn">M</button>
+            </div>
+        </div>
+        <div id="overlayWindow" class="overlayWindow">
+            <div class="oRow">
+                <textarea maxlength="2" id="chnOTextarea" readonly></textarea>
+            </div>
+            <div class="oRow">
+                <button class="oBtn3" id="b7">7</button>
+                <button class="oBtn3" id="b8">8</button>
+                <button class="oBtn3" id="b9">9</button>
+            </div>
+            <div class="oRow3">
+                <button class="oBtn3" id="b4">4</button>
+                <button class="oBtn3" id="b5">5</button>
+                <button class="oBtn3" id="b6">6</button>
+            </div>
+            <div class="oRow">
+                <button class="oBtn3" id="b1">1</button>
+                <button class="oBtn3" id="b2">2</button>
+                <button class="oBtn3" id="b3">3</button>
+            </div>
+            <div class="oRow">
+                <button class="oBtn3"id="b0">0</button>
+                <button class="oBtn3" id="oDelete">Del</button>
+                <button class="oBtn3"id="oEnter">Enter</button>
+            </div>
+            <div class="oRow">
+                <button class="oBtn1"id="bBack">Go Back</button>
+            </div>
+        </div>
+            <img id="warning" src="warning.jpg" alt="WARNING WRONG FREQUENCY"> 
+        <div class="frm">
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
