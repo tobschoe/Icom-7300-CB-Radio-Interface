@@ -2,6 +2,9 @@ html {
     background-color: rgb(41, 41, 41);
 }
 
+* {
+}
+
 textarea {
     width: 100px;
     height: 80px;
