@@ -122,7 +122,7 @@ function main() {
     res.sendFile(__dirname + '/index.html')
   })
   
-  http.listen(3005, () => {
+  http.listen(config.expressPort, () => {
     console.log('IcomSteuerung listening on : 3005')
   })
 

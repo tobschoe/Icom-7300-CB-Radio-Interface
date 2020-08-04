@@ -37,5 +37,7 @@ config.autoChnNine = true //  true or false
 //  Baudrate (on windows likely only 9600)
 config.baudrate = 9600
 
+//  Port for webserver
+config.expressPort = 3005 //  default port is 3005
 
 module.exports = config
