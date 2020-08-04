@@ -8,7 +8,7 @@ const port = new SerialPort(config.serialpath, function (err) {
 },
 
 {
-  baudRate: 9600,
+  baudRate: config.baudrate,
   dataBits: 8,
   stopBits: 1,
   Parity: 'none',

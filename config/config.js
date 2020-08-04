@@ -30,4 +30,7 @@ config.defaultFMRxFilter = "FEFE94E0060502FD"
 //  Turn on/off the function to auto go on Chn 9 FM
 config.autoChnNine = true //  true or false
 
+//  Baudrate (on windows only 9600)
+config.baudrate = 9600
+
 module.exports = config
