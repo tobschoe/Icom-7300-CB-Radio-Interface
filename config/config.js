@@ -14,6 +14,10 @@ if (config.serialpath === "") {
   }
 }
 
+//  Icom ci-v address / Controller ci-v address
+config.addrIcom = "94"  //  default = "94"
+config.addrContr = "E0" //  default = "E0"
+
 //  Default RF Power in Percent
 //  0000 = 0% / 0255 = 100%
 config.defaultRfPoweram = '0040'
@@ -24,13 +28,14 @@ config.defaultRfPowerssb = '0051'
 //  Changes your Fm filter while sending and recieving. (Smaller filter while RX, wider filter while Tx)
 config.fmTxRxFilterSwitcher = true //  true or talse
 
-config.defaultFMTxFilter = "FEFE94E0060501FD"
-config.defaultFMRxFilter = "FEFE94E0060502FD"
+config.defaultFMTxFilter = "FEFE" + config.addrIcom + config.addrContr + "060501FD"
+config.defaultFMRxFilter = "FEFE" + config.addrIcom + config.addrContr + "060502FD"
 
 //  Turn on/off the function to auto go on Chn 9 FM
 config.autoChnNine = true //  true or false
 
-//  Baudrate (on windows only 9600)
+//  Baudrate (on windows likely only 9600)
 config.baudrate = 9600
+
 
 module.exports = config

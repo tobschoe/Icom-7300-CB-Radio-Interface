@@ -1,14 +1,20 @@
 // --FEFE94E00600FD -> FEFE = Funciton Prefix, 94 = Trx address, E0 = Sender address, 06 = Command,  00 = Data, FD = Command END--//
 
+const config = require("./config/config")
+
 const icomCmd = {}
 
-icomCmd.sendPre = "FEFE94E0"
+icomCmd.sendPre = "FEFE" + config.addrIcom + config.addrContr
 icomCmd.sendPost = "FD"
 
-icomCmd.getPre1 = "fefe094"
-icomCmd.getPre2 = "fefe0094"
+icomCmd.getPre1 = "fefe0" + config.addrIcom
+icomCmd.getPre2 = "fefe00" + config.addrIcom
 
 icomCmd.setModPre = "140A"
+
+icomCmd.askMod = "FEFE" + config.addrIcom + config.addrContr + "04FD"
+icomCmd.askFrq = "FEFE" + config.addrIcom + config.addrContr + "03FD"
+icomCmd.askNoise = "FEFE" + config.addrIcom + config.addrContr + "1502FD"
 
 icomCmd.mods = {
   "FM": "060502",

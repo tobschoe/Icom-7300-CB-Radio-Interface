@@ -1,7 +1,5 @@
 let port = require("../serial")
 const SerialPort = require('serialport')
-const Delimiter = require('@serialport/parser-delimiter')
-const ByteLength = require('@serialport/parser-byte-length')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
 var config = require('../config/config')
 var icomCmd = require("../var")
@@ -10,11 +8,12 @@ const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
 
 // Class definition
 class Tr {
-  constructor(cmod, cfrq, cchn, isTx) {
+  constructor(cmod, cfrq, cchn, cnoise, isTx) {
     this.cmod = cmod
     this.cfrq = cfrq
     this.cchn = cchn
     this.isTx = isTx
+    this.cnoise = cnoise
   }
   
   changeMod(mod) {
@@ -102,13 +101,12 @@ class Tr {
 
   initPortWrite() {
     if(config.autoChnNine == true) {
-        port.write(Buffer.from('FEFE94E0000050062700FD', 'hex')) // Set chn 9
-        port.write(Buffer.from('FEFE94E0060502FD', 'hex')) // Set Filter 2 FM
-        port.write(Buffer.from('FEFE94E0140A' + config.defaultRfPowerfm + 'FD', 'hex')) // setRFpower to defualt fm
+        port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "000050062700FD", 'hex')) // Set chn 9
+        port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "060502FD", 'hex')) // Set Filter 2 FM
+        port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "140A" + config.defaultRfPowerfm + 'FD', 'hex')) // setRFpower to defualt fm
         this.cmod = 'FM'
     }
   }
-
 
 }
 

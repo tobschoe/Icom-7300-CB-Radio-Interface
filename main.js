@@ -1,6 +1,4 @@
 const SerialPort = require('serialport')
-const Delimiter = require('@serialport/parser-delimiter')
-const ByteLength = require('@serialport/parser-byte-length')
 const port = require('./serial')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
 var config = require('./config/config')
@@ -9,36 +7,33 @@ var app = require('express')()
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
 var express = require('express')
-const { type } = require('os')
-const { strict } = require('assert')
 let Tr = require("./classes/tr")
 let icom = new Tr
 
 const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
 
-
 function checkIfMod (LatestData) {
   switch (LatestData.slice(0, -2)) {
-    case 'fefee0940401':
+    case "fefe" + config.addrContr.toLocaleLowerCase() + config.addrIcom + "0401":
     case 'fefe00940101':
       io.emit('cMod', 'USB')
       icom.cmod = "USB"
       // change rf power FEFE94E0140A0026FD = Default FM FEFE94E0140A0051FD ) Default SSB
       port.write(Buffer.from(icomCmd.sendPre + icomCmd.setModPre + config.defaultRfPowerssb + icomCmd.sendPost, 'hex'))
       break
-    case 'fefee0940400':
+    case "fefe" + config.addrContr.toLocaleLowerCase() + config.addrIcom + "0400":
     case 'fefee00940100':
       io.emit('cMod', 'LSB')
       icom.cmod = 'LSB'
       port.write(Buffer.from(icomCmd.sendPre + icomCmd.setModPre + config.defaultRfPowerssb + icomCmd.sendPost, 'hex'))
       break
-    case 'fefee0940402':
+    case "fefe" + config.addrContr.toLocaleLowerCase() + config.addrIcom + "0402":
     case 'fefe00940102':
       io.emit('cMod', 'AM')
       icom.cmod = 'AM'
       port.write(Buffer.from(icomCmd.sendPre + icomCmd.setModPre + config.defaultRfPoweram + icomCmd.sendPost, 'hex'))
       break
-    case 'fefee0940405':
+    case "fefe" + config.addrContr.toLocaleLowerCase() + config.addrIcom + "0405":
     case 'fefe00940105':
       io.emit('cMod', 'FM')
       icom.cmod = 'FM'
@@ -60,6 +55,7 @@ function checkIfFrq (LatestData) {
 function checkIfNoise (LatestData) {
   if (LatestData.length == 16) {
     io.emit('noise', LatestData.slice(-3))
+    icom.cnoise = LatestData.slice(-3)
     // LatestData.slice(-3)
     noiselevelInt = parseInt(LatestData.slice(-3))
     if (icom.cmod == 'FM') { // Check if Mod is FM
@@ -68,14 +64,12 @@ function checkIfNoise (LatestData) {
           icom.changeFMFilter(config.defaultFMTxFilter)
         }
         icom.isTx = true
-        console.log('TXING')
       }
       if (noiselevelInt > 1 && icom.isTx) {
         if (config.fmTxRxFilterSwitcher == true) {
           icom.changeFMFilter(config.defaultFMRxFilter)
         }
         icom.isTx = false
-        console.log('RXING')
       }
     }
   }
@@ -83,18 +77,18 @@ function checkIfNoise (LatestData) {
 
 function askTrForDataInt() {
   modInt = setInterval(function () {
-    port.write(Buffer.from('FEFE94E004FD', 'hex')) // On connect check current modulation
+    port.write(Buffer.from(icomCmd.askMod, 'hex')) // On connect check current modulation
     clearInterval(modInt)
   }, 1200)
   
   frqInt = setInterval(function () {
-    port.write(Buffer.from('FEFE94E003FD', 'hex')) // On connect check current frequency
+    port.write(Buffer.from(icomCmd.askFrq, 'hex')) // On connect check current frequency
     clearInterval(frqInt)
   }, 1000)
   
   // Write cmd to port every 300ms to ask the current noise level (0-255)
   noiseInt = setInterval(function () {
-      port.write(Buffer.from('FEFE94E01502FD', 'hex'))
+      port.write(Buffer.from(icomCmd.askNoise, 'hex'))
   }, 300)
 }
 
@@ -150,10 +144,9 @@ function main() {
     })
 
     socket.on('change mod', (data) => {
-        console.log('Changed mod to ' + data)
         icom.cmod = data
         icom.changeMod(data)
-        port.write(Buffer.from('FEFE94E004FD', 'hex'))
+        port.write(Buffer.from(icomCmd.askMod, 'hex'))
     })
 
     socket.on('chnEnter', (data) => {
