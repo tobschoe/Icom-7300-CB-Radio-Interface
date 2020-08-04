@@ -125,6 +125,23 @@ input[id=noiserange]::-webkit-slider-thumb {
     font-size: 40px;
 }
 
+.btn-shutdown {
+  position:absolute;
+  top: 11%;
+  left: 90%;
+  height: 60px;
+  width: 100px;
+  transform: translate(-50%, -50%);
+}
+
+#shutdown {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(255, 0, 0, 0.527);
+  font-size: 30px;
+}
+
 .switchCh {
     position:absolute;
     top: 60%;

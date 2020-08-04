@@ -1,8 +1,8 @@
-let port = require("../serial")
+let port = require("../js/serial")
 const SerialPort = require('serialport')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
 var config = require('../config/config')
-var icomCmd = require("../var")
+var icomCmd = require("../js/var")
 
 const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
 

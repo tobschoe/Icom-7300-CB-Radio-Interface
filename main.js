@@ -1,12 +1,13 @@
 const SerialPort = require('serialport')
-const port = require('./serial')
+const port = require('./js/serial')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
 var config = require('./config/config')
-var icomCmd = require("./var")
+var icomCmd = require("./js/var")
 var app = require('express')()
 var http = require('http').createServer(app)
 var io = require('socket.io')(http)
 var express = require('express')
+let shutdown = require('./js/shutdown.js')
 let Tr = require("./classes/tr")
 let icom = new Tr
 
@@ -109,6 +110,7 @@ function main() {
     var bitsArray = []
     bitsArray.push(data)
     LatestData = bitsArray.toString()
+    console.log(LatestData)
 
     checkIfMod(LatestData)
     checkIfFrq(LatestData)
@@ -165,6 +167,14 @@ function main() {
     socket.on('chnEnter', (data) => {
       icom.changeChn(data)
     })
+
+    socket.on('shutdown', () => {
+      // Shutdown Computer
+      shutdown(function(output){
+        console.log(output);
+      })
+    })
+
   })
 }
 

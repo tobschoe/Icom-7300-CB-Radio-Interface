@@ -1,5 +1,4 @@
 var socket = io()
-var currentChannel = 0
 const chnAr = ['0', '26.965.00', '26.975.00', '26.985.00', '27.005.00', '27.015.00', '27.025.00', '27.035.00', '27.055.00', '27.065.00', '27.075.00', '27.085.00',
   '27.105.00', '27.115.00', '27.125.00', '27.135.00', '27.155.00', '27.165.00', '27.175.00', '27.185.00', '27.205.00', '27.215.00', '27.225.00', '27.255.00', '27.235.00',
   '27.245.00', '27.265.00', '27.275.00', '27.285.00', '27.295.00', '27.305.00', '27.315.00', '27.325.00', '27.335.00', '27.345.00', '27.355.00', '27.365.00', '27.375.00',
@@ -115,6 +114,11 @@ $('#oDelete').click(function () {
   document.getElementById('chnOTextarea').value = ''
 })
 
+// Shutdown Pc
+$('#shutdown').click(function () {
+  socket.emit('shutdown')
+})
+
 socket.on('frq', data => {
   if (data != null) {
     document.getElementById('frq').value = data
@@ -147,7 +151,7 @@ nrSmootherInt = setInterval(function () {
   if (noiselevelInt < document.getElementById('noiserange').value) {
     document.getElementById('noiserange').value -= 1
   }
-  if (noiselevelInt - document.getElementById('noiserange').value > 90 || noiselevelInt - document.getElementById('noiserange').value > -90) {
+  if (noiselevelInt - document.getElementById('noiserange').value > 60 || noiselevelInt - document.getElementById('noiserange').value < -60) {
     document.getElementById('noiserange').value = noiselevelInt
   }
 }, 100)

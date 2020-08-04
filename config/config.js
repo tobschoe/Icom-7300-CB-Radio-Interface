@@ -8,9 +8,11 @@ config.serialpath = ""  // Enter the serialport path to your Ic-7300 or leave st
 if (config.serialpath === "") {
   if (os.platform() === 'win32' || 'win64') {
     config.serialpath = 'COM3'
+    config.shutdownCmd = "shutdown -r"  //  Not working on windows
   }
   if (os.platform() === 'linux'){
     config.serialpath = "/dev/ttyUSB0" 
+    config.shutdownCmd = "'shutdown -r now'"
   }
 }
 
@@ -34,8 +36,8 @@ config.defaultFMRxFilter = "FEFE" + config.addrIcom + config.addrContr + "060502
 //  Turn on/off the function to auto go on Chn 9 FM
 config.autoChnNine = true //  true or false
 
-//  Baudrate (on windows likely only 9600)
-config.baudrate = 9600
+//  Baudrate
+config.baudrate = 19200
 
 //  Port for webserver
 config.expressPort = 3005 //  default port is 3005
