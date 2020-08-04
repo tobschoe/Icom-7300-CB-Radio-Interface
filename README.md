@@ -3,7 +3,10 @@
 
 ## About:
 This is a hobby project i am making to gain knowledge of 
-serial communication.
+serial communications.
+
+I am using an Icom ic-7300 with a Raspberry Pi model b+ with a 7inch touchscreen.
+
 ### Usage
 To use your Icom ic7300 as a CB radio
 
