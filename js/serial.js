@@ -1,7 +1,8 @@
+const serialpathconfig = require('../config/serialpathconfig')
 const SerialPort = require('serialport')
-const config = require('../config/config')
+let config = require('../config/config.json')
 
-const port = new SerialPort(config.serialpath,
+const port = new SerialPort(serialpathconfig.serialpath,
 {
   baudRate: config.baudrate,
   dataBits: 8,

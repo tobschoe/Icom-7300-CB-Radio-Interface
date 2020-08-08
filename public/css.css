@@ -2,6 +2,10 @@ html {
     background-color: rgb(41, 41, 41);
 }
 
+textarea {
+  resize: none;
+}
+
 @media (max-width: 650px) { 
   * {
     cursor: none;
@@ -224,30 +228,19 @@ input[id=noiserange]::-webkit-slider-thumb {
     font-size: 20px;
 }
 
-/*
-        <div id="overlayWindow" class="overlayWindow">
-            <div class="oRow1">
-                <textarea id="chnOTextarea" readonly></textarea>
-            </div>
-            <div class="oRow2">
-                <button class="oBtn3" id="b7">7</button>
-                <button class="oBtn3" id="b8">8</button>
-                <button class="oBtn3" id="b9">9</button>
-            </div>
-            <div class="oRow3">
-                <button class="oBtn3" id="b4">4</button>
-                <button class="oBtn3" id="b5">5</button>
-                <button class="oBtn3" id="b6">6</button>
-            </div>
-            <div class="oRow4">
-                <button class="oBtn3" id="b1">1</button>
-                <button class="oBtn3" id="b2">2</button>
-                <button class="oBtn3" id="b3">3</button>
-            </div>
-            <div class="oRow5">
-                <button class="oBtn2" id="oDelete"></button>
-                <button class="oBtn2"id="oEnter"></button>
-            </div>
-        </div>
+#config-window {
+  visibility: hidden;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(228, 119, 17);
+  border-radius: 5px;
+}
 
-*/
+.config-textarea {
+  height: 20px;
+  width: 70px;
+}

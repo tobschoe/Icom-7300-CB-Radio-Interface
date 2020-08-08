@@ -1,6 +1,6 @@
 // --FEFE94E00600FD -> FEFE = Funciton Prefix, 94 = Trx address, E0 = Sender address, 06 = Command,  00 = Data, FD = Command END--//
 
-const config = require("../config/config")
+const config = require("../config/config.json")
 
 const icomCmd = {}
 
