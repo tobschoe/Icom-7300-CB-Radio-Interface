@@ -108,7 +108,6 @@ function main() {
     port.on('data', function (data) {
       if(data) {
         let dataString = Buffer.from(data).toString('hex')
-        console.log("DataString: "+ dataString + " Raw  Buffer Data: " + Buffer.from(data) + " RAW Data: " + data )
         var bitsArray = []
         bitsArray.push(data)
         LatestData = dataString.slice(0, -2)  // bitsArray.toString()
