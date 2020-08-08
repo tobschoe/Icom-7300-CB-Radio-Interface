@@ -1,0 +1,14 @@
+{
+    "shutdownCmd" : "",
+    "addrIcom" : "94",
+    "addrContr" : "E0",
+    "defaultRfPoweram" : "0040",
+    "defaultRfPowerfm" : "0026",
+    "defaultRfPowerssb" : "0051",
+    "fmTxRxFilterSwitcher" : true,
+    "defaultFMTxFilter" : "FEFE94E0060501FD",
+    "defaultFMRxFilter" : "FEFE94E0060502FD",
+    "autoChnNine" : true,
+    "baudrate" : 19200,
+    "expressPort" : 3005
+}

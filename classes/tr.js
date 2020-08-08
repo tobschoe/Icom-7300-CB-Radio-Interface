@@ -1,7 +1,7 @@
 let port = require("../js/serial")
 const SerialPort = require('serialport')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
-var config = require('../config/config')
+var config = require('../config/config.json')
 var icomCmd = require("../js/var")
 
 const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
@@ -100,10 +100,16 @@ class Tr {
   }
 
   initPortWrite() {
-    if(config.autoChnNine == true) {
+    if (config.autoChnNine == true) {
+      setTimeout(function () {
         port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "000050062700FD", 'hex')) // Set chn 9
+      }, 50)
+      setTimeout(function () {
         port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "060502FD", 'hex')) // Set Filter 2 FM
+      }, 100)
+      setTimeout(function () {
         port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "140A" + config.defaultRfPowerfm + 'FD', 'hex')) // setRFpower to defualt fm
+      }, 150)
         this.cmod = 'FM'
     }
   }

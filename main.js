@@ -1,7 +1,8 @@
+let serialpathconfig = require('./config/serialpathconfig')
 const SerialPort = require('serialport')
 const port = require('./js/serial')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
-var config = require('./config/config')
+var config = require('./config/config.json')
 var icomCmd = require("./js/var")
 var app = require('express')()
 var http = require('http').createServer(app)
@@ -9,9 +10,12 @@ var io = require('socket.io')(http)
 var express = require('express')
 let shutdown = require('./js/shutdown.js')
 let Tr = require("./classes/tr")
+let Configc = require("./classes/configc")
 let icom = new Tr
+var cfg = require("./classes/configc")  // object cfg
+function init() {
 
-const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
+}
 
 function checkIfMod (LatestData) {
   switch (LatestData.slice(0, -2)) {
@@ -90,31 +94,42 @@ function askTrForDataInt() {
   // Write cmd to port every 300ms to ask the current noise level (0-255)
   noiseInt = setInterval(function () {
       port.write(Buffer.from(icomCmd.askNoise, 'hex'))
-  }, 300)
+  }, 500)
 }
+
+//  const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
 
 //  main
 function main() {
 
   port.on('open', function () {
+
     console.log('port open. Data rate: ' + port.baudRate)
+    port.on('data', function (data) {
+      if(data) {
+        let dataString = Buffer.from(data).toString('hex')
+        console.log("DataString: "+ dataString + " Raw  Buffer Data: " + Buffer.from(data) + " RAW Data: " + data )
+        var bitsArray = []
+        bitsArray.push(data)
+        LatestData = dataString.slice(0, -2)  // bitsArray.toString()
+        //  console.log(LatestData)
+    
+        checkIfMod(LatestData)
+        checkIfFrq(LatestData)
+        checkIfNoise(LatestData)
+        port.resume()
+      }
+      else {
+        console.log("No DATA emittet")
+      }
+    })
   })
+
   port.on('close', function () {
     console.log('port closed.')
   })
   port.on('error', function () {
     console.log('Serial port error: ' + error)
-  })
-
-  parser.on('data', function (data) {
-    var bitsArray = []
-    bitsArray.push(data)
-    LatestData = bitsArray.toString()
-    console.log(LatestData)
-
-    checkIfMod(LatestData)
-    checkIfFrq(LatestData)
-    checkIfNoise(LatestData)
   })
 
   //  Express Server init at Port 3005
@@ -136,6 +151,7 @@ function main() {
       askTrForDataInt()
       clearInterval(chn9Int)
     }, 350)
+
     icom.initPortWrite()
 
     socket.on('disconnect', () => {
@@ -178,4 +194,5 @@ function main() {
   })
 }
 
+init()
 main()
