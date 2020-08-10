@@ -1,18 +1,17 @@
-let serialpathconfig = require('./config/serialpathconfig')
-const SerialPort = require('serialport')
 const port = require('./js/serial')
-var Readline = SerialPort.parsers.Readline // make instance of Readline parser
-var config = require('./config/config.json')
-var icomCmd = require("./js/var")
-var app = require('express')()
-var http = require('http').createServer(app)
-var io = require('socket.io')(http)
-var express = require('express')
+let config = require('./config/config.json')
+let icomCmd = require("./js/var")
+let app = require('express')()
+let http = require('http').createServer(app)
+let io = require('socket.io')(http)
+let express = require('express')
 let shutdown = require('./js/shutdown.js')
+let kill = require('./js/kill.js')
 let Tr = require("./classes/tr")
-let Configc = require("./classes/configc")
+const cfg = require('./classes/configc')
+const { parse } = require('path')
 let icom = new Tr
-var cfg = require("./classes/configc")  // object cfg
+
 function init() {
 
 }
@@ -61,7 +60,6 @@ function checkIfNoise (LatestData) {
   if (LatestData.length == 16) {
     io.emit('noise', LatestData.slice(-3))
     icom.cnoise = LatestData.slice(-3)
-    // LatestData.slice(-3)
     noiselevelInt = parseInt(LatestData.slice(-3))
     if (icom.cmod == 'FM') { // Check if Mod is FM
       if (noiselevelInt <= 1 && !icom.isTx) {
@@ -182,6 +180,70 @@ function main() {
     socket.on('chnEnter', (data) => {
       icom.changeChn(data)
     })
+
+    socket.on('cfg-change', (data) => {
+      let pream = ""
+      let prefm = ""
+      let pressb = ""
+      for (let i = 0; i < 3; i++){
+        if (data.defaultRfPoweram.length + pream.length < 4) {
+          pream += "0"
+        }
+        if (data.defaultRfPowerfm.length + prefm.length < 4) {
+          prefm += "0"
+        }
+        if (data.defaultRfPowerssb.length + pressb.length < 4) {
+          pressb += "0"
+        }
+      }
+      config.addrIcom = data.addrIcom
+      config.defaultRfPoweram = pream + data.defaultRfPoweram
+      config.defaultRfPowerssb = pressb + data.defaultRfPowerssb
+      config.defaultRfPowerfm = prefm + data.defaultRfPowerfm
+      config.fmTxRxFilterSwitcher = data.fmTxRxFilterSwitcher
+      config.defaultFMTxFilter = data.defaultFMTxFilter
+      config.defaultFMRxFilter = data.defaultFMRxFilter
+      config.autoChnNine = data.autoChnNine
+      config.baudrate = data.baudrate
+      config.expressPort = data.expressPort
+      cfg.write("addrIcom", data.addrIcom)
+      cfg.write("defaultRfPoweram", pream + data.defaultRfPoweram)
+      cfg.write("defaultRfPowerfm", prefm + data.defaultRfPowerfm)
+      cfg.write("defaultRfPowerssb", pressb + data.defaultRfPowerssb)
+      cfg.write("fmTxRxFilterSwitcher", data.fmTxRxFilterSwitcher)
+      cfg.write("defaultFMTxFilter", data.defaultFMTxFilter)
+      cfg.write("defaultFMRxFilter", data.defaultFMRxFilter)
+      cfg.write("autoChnNine", data.autoChnNine)
+      cfg.write("baudrate", parseInt(data.baudrate))
+      cfg.write("expressPort", parseInt(data.expressPort))
+
+      //  Set RF Power
+      if (icom.cmod == "USB" || "LSB") {
+        port.write(Buffer.from(icomCmd.sendPre + icomCmd.setModPre + config.defaultRfPowerssb + icomCmd.sendPost, 'hex'))
+      }
+      if (icom.cmod == "FM") {
+        port.write(Buffer.from(icomCmd.sendPre + icomCmd.setModPre + config.defaultRfPowerfm + icomCmd.sendPost, 'hex'))
+      }
+      if (icom.cmod == "AM") {
+        port.write(Buffer.from(icomCmd.sendPre + icomCmd.setModPre + config.defaultRfPoweram + icomCmd.sendPost, 'hex'))
+      }
+      //  Set RX Filter
+      icom.changeFMFilter(config.defaultFMRxFilter)
+
+    })
+
+    socket.on('cfg-get', () => {
+      io.emit('cfg-load', config)
+    })
+
+    //  process.exit()
+    socket.on('return-to-os', () => {
+      kill(function(output){
+        console.log(output);
+      })
+    })
+    
+    io.emit('cfg-load', config)
 
     socket.on('shutdown', () => {
       // Shutdown Computer

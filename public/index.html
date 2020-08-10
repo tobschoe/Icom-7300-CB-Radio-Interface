@@ -21,6 +21,11 @@
         <div class = "btn-shutdown">
             <button id="shutdown">Power</button>
         </div>
+        <div id="power-window">
+          <button class="power-window-btn" id="power-off">Turn Off</button>
+          <button class="power-window-btn" id="power-os">Back to OS</button>
+          <button class="power-window-btn" id="power-cancel">Cancel</button>
+        </div>
         <div class="btn-row">
             <div class="btn">
                 <button class="btn-row-button" id="FM">FM</button>
@@ -74,25 +79,54 @@
                 <button class="oBtn1"id="bBack">Go Back</button>
             </div>
         </div>
-        <div class="config" style="visibility: hidden;">
-          <button id="config-btn">Cfg</button>
+        <div class="config-btn">
+          <button id="config-btn">Options</button>
         </div>
         <div id="config-window">
-          <div class="config-row-1">
-            <label>Icom-Address</label> <textarea class="config-textarea" id="addrIcom"></textarea>
-            <label>Controller-Address</label> <textarea class="config-textarea" id="addrContr"></textarea>
+          <div class="config-control">
+            <button class="config-control-btn" id="config-save">Save</button>
+            <button class="config-control-btn" id="config-back">Back</button>
+            <button class="config-control-btn" id="config-del">Delete</button>
           </div>
-          <div class="config-row-2">
-
+          <div id="config-data-area">
+            <div class="config-row">
+              <label>Icom-Address: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input type="text" class="config-textarea config-txt-input" id="addrIcom"></input> <br>
+              <label>Controller-Address:</label> <input type="text" class="config-textarea" id="addrContr"></input>
+            </div>
+            <br><hr>
+            <div class="config-row">
+              <label>D. FM Power: </label> <label id="fm-power">0%</label> <br> 
+              <input class="default-power-input" id="default-power-fm" type="range" min="0" max="255"> <br>
+              <label>D. AM Power: </label> <label id="am-power">0%</label> <br> 
+              <input class="default-power-input" id="default-power-am" type="range" min="0" max="255"> <br>
+              <label>D. SSB Power: </label> <label id="ssb-power">0%</label> <br> 
+              <input class="default-power-input" id="default-power-ssb" type="range" min="0" max="255">
+            </div>
+            <br><hr>
+            <div class="config-row">
+              <label>FM Autofilter: </label> <input id="autofilter-box" type="checkbox"> <br>
+              <label>Fm-Tx-Filter: </label> <input class="config-txt-input" id="fm-tx-filter-input" type="text"> <label>1, 2, 3</label> <br>
+              <label>Fm-Rx-Filter: </label> <input class="config-txt-input" id="fm-rx-filter-input" type="text"> <label>1, 2, 3</label> <br>
+              <label>Chn 9 on startup: </label> <input id="auto-chn9" type="checkbox">
+            </div>
+            <br><hr>
+            <div class="config-row">
+              <label>Baudrate: </label> <input class="config-txt-input" id="baudrate-input" type="text"> <br>
+              <label>Web-Port: </label> <input class="config-txt-input" id="webport-input" type="text">
+            </div>
+            <br> <hr>
           </div>
-          <div class="config-row-3">
-
-          </div>
-          <div class="config-row-4">
-
-          </div>
-          <div class="config-row-5">
-
+          <div class="config-input">
+            <button class="config-input-btn" id="config-input-0">0</button>
+            <button class="config-input-btn" id="config-input-1">1</button>
+            <button class="config-input-btn" id="config-input-1">2</button>
+            <button class="config-input-btn" id="config-input-1">3</button>
+            <button class="config-input-btn" id="config-input-1">4</button>
+            <button class="config-input-btn" id="config-input-1">5</button>
+            <button class="config-input-btn" id="config-input-1">6</button>
+            <button class="config-input-btn" id="config-input-1">7</button>
+            <button class="config-input-btn" id="config-input-1">8</button>
+            <button class="config-input-btn" id="config-input-1">9</button>
           </div>
         </div>
             <img id="warning" src="warning.jpg" alt="WARNING WRONG FREQUENCY"> 

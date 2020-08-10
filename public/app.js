@@ -1,3 +1,4 @@
+
 var socket = io()
 const chnAr = ['0', '26.965.00', '26.975.00', '26.985.00', '27.005.00', '27.015.00', '27.025.00', '27.035.00', '27.055.00', '27.065.00', '27.075.00', '27.085.00',
   '27.105.00', '27.115.00', '27.125.00', '27.135.00', '27.155.00', '27.165.00', '27.175.00', '27.185.00', '27.205.00', '27.215.00', '27.225.00', '27.255.00', '27.235.00',
@@ -114,11 +115,6 @@ $('#oDelete').click(function () {
   document.getElementById('chnOTextarea').value = ''
 })
 
-// Shutdown Pc
-$('#shutdown').click(function () {
-  socket.emit('shutdown')
-})
-
 socket.on('frq', data => {
   if (data != null) {
     document.getElementById('frq').value = data
@@ -189,26 +185,131 @@ socket.on('cMod', data => {
   }
 })
 document.getElementById('FM').style.backgroundColor = 'red'
-//  make fullscreen
-/* Get the element you want displayed in fullscreen mode */
-var elem = document.html;
 
-/* When the openFullscreen() function is executed, open the video in fullscreen.
-Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
-function openFullscreen() {
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.mozRequestFullScreen) { /* Firefox */
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE/Edge */
-    elem.msRequestFullscreen();
-  }
-}
 
 //  Option Screen
 $('#config-btn').click(function () {
+  socket.emit('cfg-get')
   document.getElementById('config-window').style.visibility = 'visible'
 })
 
+//  Back Button
+$('#config-back').click(function () {
+  document.getElementById('config-window').style.visibility = 'hidden'
+})
+
+// Save
+$('#config-save').click(function () {
+  let cfgData = {}
+  cfgData.addrIcom = document.getElementById("addrIcom").value
+  cfgData.addrContr = document.getElementById("addrContr").value
+  cfgData.defaultRfPoweram = document.getElementById("default-power-am").value
+  cfgData.defaultRfPowerfm = document.getElementById("default-power-fm").value
+  cfgData.defaultRfPowerssb = document.getElementById("default-power-ssb").value
+
+  if(document.getElementById("autofilter-box").checked) {
+    cfgData.fmTxRxFilterSwitcher = true
+  }
+  else {
+    cfgData.fmTxRxFilterSwitcher = false
+  }
+
+  cfgData.defaultFMTxFilter = document.getElementById("fm-tx-filter-input").value
+  cfgData.defaultFMRxFilter = document.getElementById("fm-rx-filter-input").value
+
+  if(document.getElementById("auto-chn9").checked) {
+    cfgData.autoChnNine = true
+  }
+  else {
+    cfgData.autoChnNine = false
+  }
+
+  cfgData.baudrate = document.getElementById("baudrate-input").value
+  cfgData.expressPort = document.getElementById("webport-input").value
+
+  socket.emit('cfg-change', cfgData)
+})
+
+//  Default Power
+function percentage(num)
+{
+  return Math.floor((num/255)*100);
+}
+
+document.getElementById("fm-power").innerText = percentage(document.getElementById("default-power-fm").value) + "%"
+$('#default-power-fm').on("change input", function () {
+  document.getElementById("fm-power").innerText = percentage(document.getElementById("default-power-fm").value) + "%"
+})
+
+document.getElementById("am-power").innerText = percentage(document.getElementById("default-power-am").value) + "%"
+$('#default-power-am').on("change input", function () {
+  document.getElementById("am-power").innerText = percentage(document.getElementById("default-power-am").value) + "%"
+})
+
+document.getElementById("ssb-power").innerText = percentage(document.getElementById("default-power-ssb").value) + "%"
+$('#default-power-ssb').on("change input", function () {
+  document.getElementById("ssb-power").innerText = percentage(document.getElementById("default-power-ssb").value) + "%"
+})
+
+socket.on('cfg-load', data => {
+  document.getElementById("addrIcom").value = data.addrIcom
+  document.getElementById("addrContr").value = data.addrContr
+  document.getElementById("default-power-am").value = data.defaultRfPoweram
+  document.getElementById("am-power").innerText = percentage(document.getElementById("default-power-am").value) + "%"
+  document.getElementById("default-power-fm").value = data.defaultRfPowerfm
+  document.getElementById("fm-power").innerText = percentage(document.getElementById("default-power-fm").value) + "%"
+  document.getElementById("default-power-ssb").value = data.defaultRfPowerssb
+  document.getElementById("ssb-power").innerText = percentage(document.getElementById("default-power-ssb").value) + "%"
+  if (data.fmTxRxFilterSwitcher === true) {
+    document.getElementById("autofilter-box").checked = true;
+  }
+  else {
+    document.getElementById("autofilter-box").checked = false;
+  }
+  document.getElementById("fm-tx-filter-input").value = data.defaultFMTxFilter
+  document.getElementById("fm-rx-filter-input").value = data.defaultFMRxFilter
+  if (data.autoChnNine === true) {
+    document.getElementById("auto-chn9").checked = true
+  }
+  else {
+    document.getElementById("auto-chn9").checked = false
+  }
+  document.getElementById("baudrate-input").value = data.baudrate
+  document.getElementById("webport-input").value = data.expressPort
+})
+
+let inputElementID
+
+$(".config-txt-input").click(function () {
+  inputElementID = $(this).attr('id')
+})
+
+$(".config-input-btn").click(function () {
+  if(inputElementID) {
+    let htmlString = $(this).html()
+    document.getElementById(inputElementID).value += htmlString
+  }
+})
+
+$('#config-del').click(function () {
+  if (inputElementID) {
+    document.getElementById(inputElementID).value = document.getElementById(inputElementID).value.slice(0, -1)
+  }
+})
+
+// Shutdown Pc
+$('#shutdown').click(function () {
+  document.getElementById("power-window").style.visibility = "visible"
+})
+
+$('#power-cancel').click(function () {
+  document.getElementById("power-window").style.visibility = "hidden"
+})
+
+$('#power-off').click(function () {
+  socket.emit('shutdown')
+})
+
+$('#power-os').click(function () {
+  socket.emit('return-to-os')
+})

@@ -17,7 +17,7 @@ icomCmd.askFrq = "FEFE" + config.addrIcom + config.addrContr + "03FD"
 icomCmd.askNoise = "FEFE" + config.addrIcom + config.addrContr + "1502FD"
 
 icomCmd.mods = {
-  "FM": "060502",
+  "FM": "0605",
   "AM": "0602",
   "USB": "0601",
   "LSB": "0600"

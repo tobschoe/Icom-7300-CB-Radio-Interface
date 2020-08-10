@@ -1,9 +1,8 @@
 let port = require("../js/serial")
 const SerialPort = require('serialport')
 var Readline = SerialPort.parsers.Readline // make instance of Readline parser
-var config = require('../config/config.json')
 var icomCmd = require("../js/var")
-
+var config = require('../config/config.json')
 const parser = port.pipe(new Readline({ encoding: 'hex', delimiter: 'FD' }))
 
 // Class definition
@@ -34,13 +33,13 @@ class Tr {
     z[4] = y.substr(0, 2)
     let a = z.join('')
     let b = a.replace('.', '0')
-    let newChannelString = 'FEFE94E005' + b + '00FD'
+    let newChannelString = icomCmd.sendPre + '05' + b + '00FD'
     port.write(Buffer.from(newChannelString, 'hex'))
-    port.write(Buffer.from('FEFE94E003FD', 'hex'))
+    port.write(Buffer.from(icomCmd.sendPre + '03FD', 'hex'))
   }
 
   chnMinus(Chn) {
-    port.write(Buffer.from('FEFE94E003FD', 'hex'))
+    port.write(Buffer.from(icomCmd.sendPre + '03FD', 'hex'))
     var newchannel = icomCmd.chnAr.indexOf(Chn) - 1
     if (newchannel == 0) {
       return
@@ -60,13 +59,13 @@ class Tr {
     a = z.join('')
     b = a.replace('.', '0')
     var newChannelString = ""
-    newChannelString = 'FEFE94E005' + b + '00FD'
+    newChannelString = icomCmd.sendPre + '05' + b + '00FD'
     port.write(Buffer.from(newChannelString, 'hex'))
-    port.write(Buffer.from('FEFE94E003FD', 'hex'))
+    port.write(Buffer.from(icomCmd.sendPre + '03FD', 'hex'))
   }
 
   chnPlus(Chn) {
-    port.write(Buffer.from('FEFE94E003FD', 'hex'))
+    port.write(Buffer.from(icomCmd.sendPre + '03FD', 'hex'))
     var newchannel = icomCmd.chnAr.indexOf(Chn) + 1
     if (newchannel == 41) {
       return
@@ -86,29 +85,28 @@ class Tr {
     a = z.join('')
     b = a.replace('.', '0')
     var newChannelString = ""
-    newChannelString = 'FEFE94E005' + b + '00FD'
+    newChannelString = icomCmd.sendPre + '05' + b + '00FD'
     port.write(Buffer.from(newChannelString, 'hex'))
-    port.write(Buffer.from('FEFE94E003FD', 'hex'))
+    port.write(Buffer.from(icomCmd.sendPre + '03FD', 'hex'))
   }
 
   ondata() {
 
   }
-
   changeFMFilter(filter) {
-    port.write(Buffer.from(filter, 'hex'))
+    port.write(Buffer.from(icomCmd.sendPre + "06050" + filter + "FD", 'hex'))
   }
 
   initPortWrite() {
     if (config.autoChnNine == true) {
       setTimeout(function () {
-        port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "000050062700FD", 'hex')) // Set chn 9
+        port.write(Buffer.from(icomCmd.sendPre + "000050062700FD", 'hex')) // Set chn 9
       }, 50)
       setTimeout(function () {
-        port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "060502FD", 'hex')) // Set Filter 2 FM
+        port.write(Buffer.from(icomCmd.sendPre + "060502FD", 'hex')) // Set Filter 2 FM
       }, 100)
       setTimeout(function () {
-        port.write(Buffer.from("FEFE" + config.addrIcom + config.addrContr + "140A" + config.defaultRfPowerfm + 'FD', 'hex')) // setRFpower to defualt fm
+        port.write(Buffer.from(icomCmd.sendPre + "140A" + config.defaultRfPowerfm + 'FD', 'hex')) // setRFpower to defualt fm
       }, 150)
         this.cmod = 'FM'
     }
