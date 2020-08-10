@@ -101,13 +101,13 @@ class Tr {
     if (config.autoChnNine == true) {
       setTimeout(function () {
         port.write(Buffer.from(icomCmd.sendPre + "000050062700FD", 'hex')) // Set chn 9
-      }, 50)
+      }, 600)
       setTimeout(function () {
         port.write(Buffer.from(icomCmd.sendPre + "060502FD", 'hex')) // Set Filter 2 FM
-      }, 100)
+      }, 700)
       setTimeout(function () {
         port.write(Buffer.from(icomCmd.sendPre + "140A" + config.defaultRfPowerfm + 'FD', 'hex')) // setRFpower to defualt fm
-      }, 150)
+      }, 800)
         this.cmod = 'FM'
     }
   }
