@@ -5,11 +5,12 @@ let app = require('express')()
 let http = require('http').createServer(app)
 let io = require('socket.io')(http)
 let express = require('express')
-let shutdown = require('./js/shutdown.js')
+let shutdown = require('./js/exec.js')
 let kill = require('./js/kill.js')
 let Tr = require("./classes/tr")
 const cfg = require('./classes/configc')
 const { parse } = require('path')
+const { exec } = require('child_process')
 let icom = new Tr
 
 function init() {
@@ -246,8 +247,10 @@ function main() {
     io.emit('cfg-load', config)
 
     socket.on('shutdown', () => {
+      let data = cfg.read('./config/config.json')
+      console.log(data.shutdownCmd)
       // Shutdown Computer
-      shutdown(function(output){
+      exec(data.shutdownCmd, function(output){
         console.log(output);
       })
     })

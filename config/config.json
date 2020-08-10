@@ -1,5 +1,5 @@
 {
-  "shutdownCmd": "shutdown",
+  "shutdownCmd": "",
   "browser": "chromium",
   "osKillCmd": "pkill",
   "addrIcom": "94",

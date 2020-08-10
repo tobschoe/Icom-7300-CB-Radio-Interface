@@ -9,7 +9,7 @@ serialpathconfig.shutdownCmd = ""
 if (serialpathconfig.serialpath === "") {
   if (os.platform() === 'win32' || 'win64') {
     serialpathconfig.serialpath = 'COM3'
-    cfg.write("shutdownCmd" ,"shutdown")
+    cfg.write("shutdownCmd" ,"shutdown /s")
   }
   if (os.platform() === 'linux'){
     serialpathconfig.serialpath = '/dev/ttyUSB0' 
