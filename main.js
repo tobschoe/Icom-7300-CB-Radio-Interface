@@ -9,7 +9,6 @@ let exec = require('./js/exec.js')
 let kill = require('./js/kill.js')
 let Tr = require("./classes/tr")
 const cfg = require('./classes/configc')
-const { parse } = require('path')
 let icom = new Tr
 let path = require('path')
 

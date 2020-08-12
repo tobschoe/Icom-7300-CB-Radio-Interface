@@ -26,6 +26,14 @@
           <!--  <button class="power-window-btn" id="power-os">Back to OS</button> -->
           <button class="power-window-btn" id="power-cancel">Cancel</button>
         </div>
+        <div id="config-back-safety">
+          <h2>Go back without saving?</h2>
+          <button class="power-window-btn" id="config-safety-yes">Yes</button>
+          <button class="power-window-btn" id="config-safety-cancel">Cancel</button>
+        </div>
+        <div id="config-save-confirm">
+          <h2>Successfully saved file!</h2>
+        </div>
         <div class="btn-row">
             <div class="btn">
                 <button class="btn-row-button" id="FM">FM</button>
@@ -94,13 +102,30 @@
               <label>Controller-Address:</label> <input type="text" class="config-textarea" id="addrContr"></input>
             </div>
             <br><hr>
-            <div class="config-row">
-              <label>D. FM Power: </label> <label id="fm-power">0%</label> <br> 
-              <input class="default-power-input" id="default-power-fm" type="range" min="0" max="255"> <br>
-              <label>D. AM Power: </label> <label id="am-power">0%</label> <br> 
-              <input class="default-power-input" id="default-power-am" type="range" min="0" max="255"> <br>
-              <label>D. SSB Power: </label> <label id="ssb-power">0%</label> <br> 
-              <input class="default-power-input" id="default-power-ssb" type="range" min="0" max="255">
+            <div class="config-row" style="margin-bottom: 30px;">
+              <div class="power-label-row">
+                <label>FM Power: </label> <label id="fm-power">0%</label>
+              </div>
+              <div class="power-btn-row">
+                <input type="button" class="d-power-btn" id="power-btn-fm-minus" value="-"> 
+                <input type="button" class="d-power-btn" id="power-btn-fm-plus" value="+">
+              </div> 
+              <br>
+              <div class="power-label-row">
+                <label>AM Power: </label> <label id="am-power">0%</label>
+              </div>
+              <div class="power-btn-row">
+                <input type="button" class="d-power-btn" id="power-btn-am-minus" value="-"> 
+                <input type="button" class="d-power-btn" id="power-btn-am-plus" value="+">
+              </div>
+              <br>
+              <div class="power-label-row">
+                <label>SSB Power: </label> <label id="ssb-power">0%</label>
+              </div>
+              <div class="power-btn-row">
+                <input type="button" class="d-power-btn" id="power-btn-ssb-minus" value="-"> 
+                <input type="button" class="d-power-btn" id="power-btn-ssb-plus" value="+">
+              </div>
             </div>
             <br><hr>
             <div class="config-row">
@@ -129,7 +154,7 @@
             <button class="config-input-btn" id="config-input-1">9</button>
           </div>
         </div>
-            <img id="warning" src="warning.jpg" alt="WARNING WRONG FREQUENCY"> 
+        <img id="warning" src="warning.jpg" alt="WARNING WRONG FREQUENCY"> 
         <div class="frm">
         </div>
     </div>

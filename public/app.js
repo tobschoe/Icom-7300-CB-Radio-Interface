@@ -1,4 +1,4 @@
-
+let localData = {}
 var socket = io()
 const chnAr = ['0', '26.965.00', '26.975.00', '26.985.00', '27.005.00', '27.015.00', '27.025.00', '27.035.00', '27.055.00', '27.065.00', '27.075.00', '27.085.00',
   '27.105.00', '27.115.00', '27.125.00', '27.135.00', '27.155.00', '27.165.00', '27.175.00', '27.185.00', '27.205.00', '27.215.00', '27.225.00', '27.255.00', '27.235.00',
@@ -193,20 +193,43 @@ $('#config-btn').click(function () {
   document.getElementById('config-window').style.visibility = 'visible'
 })
 
+let hasConfigChanged = false
 //  Back Button
 $('#config-back').click(function () {
+  if (!hasConfigChanged) {
+    document.getElementById('config-window').style.visibility = 'hidden'
+  }
+  if (hasConfigChanged) {
+    document.getElementById("config-back-safety").style.visibility = "visible"
+  }
+})
+
+$('#config-safety-yes').click(function () {
+  hasConfigChanged = false
+  document.getElementById("config-back-safety").style.visibility = "hidden"
   document.getElementById('config-window').style.visibility = 'hidden'
 })
+  
+$('#config-safety-cancel').click(function () {
+  document.getElementById("config-back-safety").style.visibility = "hidden"
+})
+
+function confirmsave() {
+  document.getElementById("config-save-confirm").style.visibility = "visible"
+  setTimeout(function () {
+    document.getElementById("config-save-confirm").style.visibility = "hidden"
+  }, 2000)
+}
 
 // Save
 $('#config-save').click(function () {
+  hasConfigChanged = false
   let cfgData = {}
   cfgData.addrIcom = document.getElementById("addrIcom").value
   cfgData.addrContr = document.getElementById("addrContr").value
-  cfgData.defaultRfPoweram = document.getElementById("default-power-am").value
-  cfgData.defaultRfPowerfm = document.getElementById("default-power-fm").value
-  cfgData.defaultRfPowerssb = document.getElementById("default-power-ssb").value
-
+  cfgData.defaultRfPoweram = topercentage(document.getElementById("am-power").innerText.slice(0, -1)).toString()
+  cfgData.defaultRfPowerfm =  topercentage(document.getElementById("fm-power").innerText.slice(0, -1)).toString()
+  cfgData.defaultRfPowerssb =  topercentage(document.getElementById("ssb-power").innerText.slice(0, -1)).toString()
   if(document.getElementById("autofilter-box").checked) {
     cfgData.fmTxRxFilterSwitcher = true
   }
@@ -228,38 +251,68 @@ $('#config-save').click(function () {
   cfgData.expressPort = document.getElementById("webport-input").value
 
   socket.emit('cfg-change', cfgData)
+
+  confirmsave()
 })
 
 //  Default Power
-function percentage(num)
-{
-  return Math.floor((num/255)*100);
+function percentage(num) {
+  return Math.round((num/255)*100)
 }
 
-document.getElementById("fm-power").innerText = percentage(document.getElementById("default-power-fm").value) + "%"
-$('#default-power-fm').on("change input", function () {
-  document.getElementById("fm-power").innerText = percentage(document.getElementById("default-power-fm").value) + "%"
+function topercentage(perc) {
+  return Math.round((perc*255)/100)
+}
+
+document.getElementById("fm-power").innerText = percentage(localData.defaultRfPowerfm) + "%"
+$('#power-btn-fm-minus').click(function () {
+  if (parseInt(document.getElementById("fm-power").innerText.slice(0, -1)) > 0) {
+    hasConfigChanged = true
+    document.getElementById("fm-power").innerText = parseInt(document.getElementById("fm-power").innerText.slice(0, -1)) - 1 + "%"
+  }
+})
+$('#power-btn-fm-plus').click(function () {
+  if (parseInt(document.getElementById("fm-power").innerText.slice(0, -1)) < 100) {
+    hasConfigChanged = true
+    document.getElementById("fm-power").innerText = parseInt(document.getElementById("fm-power").innerText.slice(0, -1)) + 1 + "%"
+  }
 })
 
-document.getElementById("am-power").innerText = percentage(document.getElementById("default-power-am").value) + "%"
-$('#default-power-am').on("change input", function () {
-  document.getElementById("am-power").innerText = percentage(document.getElementById("default-power-am").value) + "%"
+document.getElementById("am-power").innerText = percentage(localData.defaultRfPoweram) + "%"
+$('#power-btn-am-minus').click(function () {
+  if (parseInt(document.getElementById("am-power").innerText.slice(0, -1)) > 0) {
+    hasConfigChanged = true
+    document.getElementById("am-power").innerText = parseInt(document.getElementById("am-power").innerText.slice(0, -1)) - 1 + "%"
+  }
+})
+$('#power-btn-am-plus').click(function () {
+  if (parseInt(document.getElementById("am-power").innerText.slice(0, -1)) < 100) {
+    hasConfigChanged = true
+    document.getElementById("am-power").innerText = parseInt(document.getElementById("am-power").innerText.slice(0, -1)) + 1 + "%"
+  }
 })
 
-document.getElementById("ssb-power").innerText = percentage(document.getElementById("default-power-ssb").value) + "%"
-$('#default-power-ssb').on("change input", function () {
-  document.getElementById("ssb-power").innerText = percentage(document.getElementById("default-power-ssb").value) + "%"
+document.getElementById("ssb-power").innerText = percentage(localData.defaultRfPowerssb) + "%"
+$('#power-btn-ssb-minus').click(function () {
+  if (parseInt(document.getElementById("ssb-power").innerText.slice(0, -1)) > 0) {
+    hasConfigChanged = true
+    document.getElementById("ssb-power").innerText = parseInt(document.getElementById("ssb-power").innerText.slice(0, -1)) - 1 + "%"
+  }
+})
+$('#power-btn-ssb-plus').click(function () {
+  if (parseInt(document.getElementById("ssb-power").innerText.slice(0, -1)) < 100) {
+    hasConfigChanged = true
+    document.getElementById("ssb-power").innerText = parseInt(document.getElementById("ssb-power").innerText.slice(0, -1)) + 1 + "%"
+  }
 })
 
 socket.on('cfg-load', data => {
+  localData = data
   document.getElementById("addrIcom").value = data.addrIcom
   document.getElementById("addrContr").value = data.addrContr
-  document.getElementById("default-power-am").value = data.defaultRfPoweram
-  document.getElementById("am-power").innerText = percentage(document.getElementById("default-power-am").value) + "%"
-  document.getElementById("default-power-fm").value = data.defaultRfPowerfm
-  document.getElementById("fm-power").innerText = percentage(document.getElementById("default-power-fm").value) + "%"
-  document.getElementById("default-power-ssb").value = data.defaultRfPowerssb
-  document.getElementById("ssb-power").innerText = percentage(document.getElementById("default-power-ssb").value) + "%"
+  document.getElementById("am-power").innerText = percentage(data.defaultRfPoweram) + "%"
+  document.getElementById("fm-power").innerText = percentage(data.defaultRfPowerfm) + "%"
+  document.getElementById("ssb-power").innerText = percentage(data.defaultRfPowerssb) + "%"
   if (data.fmTxRxFilterSwitcher === true) {
     document.getElementById("autofilter-box").checked = true;
   }
@@ -281,11 +334,13 @@ socket.on('cfg-load', data => {
 let inputElementID
 
 $(".config-txt-input").click(function () {
+  hasConfigChanged = true
   inputElementID = $(this).attr('id')
 })
 
 $(".config-input-btn").click(function () {
-  if(inputElementID) {
+  if (inputElementID) {
+    hasConfigChanged = true
     let htmlString = $(this).html()
     document.getElementById(inputElementID).value += htmlString
   }
@@ -293,6 +348,7 @@ $(".config-input-btn").click(function () {
 
 $('#config-del').click(function () {
   if (inputElementID) {
+    hasConfigChanged = true
     document.getElementById(inputElementID).value = document.getElementById(inputElementID).value.slice(0, -1)
   }
 })

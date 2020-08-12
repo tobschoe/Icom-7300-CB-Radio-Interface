@@ -321,7 +321,7 @@ label {
 }
 
 .default-power-input {
-  width: 100%;
+  width: 50px;
 }
 
 input[type="checkbox"] {
@@ -352,7 +352,7 @@ input[type="radio"] {
   width: 30px;
 }
 
-#power-window {
+#power-window, #config-back-safety{
   background-color: rgb(114, 114, 226);
   visibility: hidden;
   position:absolute;
@@ -371,4 +371,36 @@ input[type="radio"] {
   margin-top: 10%;
   height: 60%;
   width: 30%;
+}
+
+.power-label-row {
+  display: inline-block;
+  width: 50%;
+}
+
+.power-btn-row {
+  display: inline-block;
+  width: 30%;
+}
+
+.d-power-btn {
+  font-size: 30px;
+  height: 40px;
+  width: 60px;
+  margin-bottom: 5px;
+}
+
+#config-save-confirm {
+  text-align: center;
+  border: 3px solid black;
+  border-radius: 15px;
+  background-color: rgb(19, 209, 60);
+  visibility: hidden;
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 25%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
 }
