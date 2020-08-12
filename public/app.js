@@ -338,6 +338,14 @@ $(".config-txt-input").click(function () {
   inputElementID = $(this).attr('id')
 })
 
+$("#autofilter-box").click(function () {
+  hasConfigChanged = true
+})
+
+$("#auto-chn9").click(function () {
+  hasConfigChanged = true
+})
+
 $(".config-input-btn").click(function () {
   if (inputElementID) {
     hasConfigChanged = true
